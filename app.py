@@ -3,14 +3,14 @@ import google.generativeai as genai
 
 # Sayfa Ayarları
 st.set_page_config(page_title="Luna AI", page_icon="🌙")
-st.title("🌙 Luna: Birşeyler Yapmaya Başlamalısın")
+st.title("🌙 Luna: Senin Akıllı Asistanın")
 
-# API Ayarı - Burayı senin gerçek anahtarınla sabitledim
+# API Ayarı
 API_KEY = "AIzaSyCuBPFaFysKBqjPsnUHO3o2qY57voTtNaI"
 genai.configure(api_key=API_KEY)
 
 # Luna'nın Kişiliği ve Model Seçimi
-system_prompt = "Senin adın Luna. Nazik, neşeli ve bilgili bir asistansın."
+# Not: 'gemini-1.5-flash' en güncel ve hızlı modeldir.
 model = genai.GenerativeModel('gemini-1.5-flash')
 
 # Sohbet Geçmişini Başlat
@@ -32,13 +32,18 @@ if prompt := st.chat_input("Luna'ya bir şeyler sor..."):
     # Luna'nın cevabını oluştur
     with st.chat_message("assistant"):
         try:
-            # Sistem talimatıyla beraber mesajı gönder
-            full_prompt = f"{system_prompt}\n\nKullanıcı: {prompt}"
+            # Sistem talimatı ile mesajı birleştiriyoruz
+            luna_instruction = "Senin adın Luna. Nazik ve neşeli bir asistansın. "
+            full_prompt = luna_instruction + prompt
+            
             response = model.generate_content(full_prompt)
             
-            st.markdown(response.text)
-            st.session_state.messages.append({"role": "assistant", "content": response.text})
+            if response.text:
+                st.markdown(response.text)
+                st.session_state.messages.append({"role": "assistant", "content": response.text})
+            else:
+                st.write("Luna şu an sessiz kaldı, lütfen tekrar sormayı dene.")
+                
         except Exception as e:
-            st.error(f"Bir hata oluştu: {e}")
-        st.markdown(response.text)
-        st.session_state.messages.append({"role": "assistant", "content": response.text})
+            st.error(f"Bağlantı hatası: {e}")
+            st.info("Lütfen API anahtarının aktif olduğunu ve internet bağlantını kontrol et.")
