@@ -11,7 +11,7 @@ genai.configure(api_key="242528900816")
 
 # Luna'nın Kişiliği
 system_prompt = "Senin adın Luna. Nazik, neşeli ve bilgili bir asistansın."
-model = genai.GenerativeModel('gemini-1.5-flash', system_instruction=system_prompt)
+model = genai.GenerativeModel('gemini-pro')
 
 # Sohbet Geçmişini Sakla (Sitede mesajların gitmemesi için)
 if "messages" not in st.session_state:
