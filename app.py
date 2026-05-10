@@ -3,7 +3,7 @@ import google.generativeai as genai
 
 # Sayfa Ayarları
 st.set_page_config(page_title="Luna AI", page_icon="🌙")
-st.title("🌙 Luna: Yıldızlar ve Ay ne kadar ilgi cekici..")
+st.title("🌙 Luna: Birşeyler Yapmaya Başlamalısın")
 
 # API Ayarı - Burayı senin gerçek anahtarınla sabitledim
 API_KEY = "AIzaSyCuBPFaFysKBqjPsnUHO3o2qY57voTtNaI"
