@@ -3,11 +3,11 @@ import google.generativeai as genai
 
 # Sayfa Ayarları
 st.set_page_config(page_title="Luna AI", page_icon="🌙")
-st.title("🌙 Luna: Senin Akıllı Asistanın")
+st.title("🌙 Luna: Hadi Birlikte Yaratalım")
 
 # API Ayarı
 API_KEY = "AIzaSyCuBPFaFysKBqjPsnUHO3o2qY57voTtNaI" # Kendi anahtarın
-genai.configure(api_key=API_KEY)
+genai.configure(api_key="242528900816")
 
 # Luna'nın Kişiliği
 system_prompt = "Senin adın Luna. Nazik, neşeli ve bilgili bir asistansın."
