@@ -1,0 +1,36 @@
+import streamlit as st
+import google.generativeai as genai
+
+# Sayfa Ayarları
+st.set_page_config(page_title="Luna AI", page_icon="🌙")
+st.title("🌙 Luna: Senin Akıllı Asistanın")
+
+# API Ayarı
+API_KEY = "AIzaSyCuBPFaFysKBqjPsnUHO3o2qY57voTtNaI" # Kendi anahtarın
+genai.configure(api_key=API_KEY)
+
+# Luna'nın Kişiliği
+system_prompt = "Senin adın Luna. Nazik, neşeli ve bilgili bir asistansın."
+model = genai.GenerativeModel('gemini-1.5-flash', system_instruction=system_prompt)
+
+# Sohbet Geçmişini Sakla (Sitede mesajların gitmemesi için)
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+# Eski mesajları ekranda göster
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+# Kullanıcıdan mesaj al
+if prompt := st.chat_input("Luna'ya bir şeyler sor..."):
+    # Kullanıcı mesajını göster ve kaydet
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
+    # Luna'nın cevabını oluştur
+    with st.chat_message("assistant"):
+        response = model.generate_content(prompt)
+        st.markdown(response.text)
+        st.session_state.messages.append({"role": "assistant", "content": response.text})
