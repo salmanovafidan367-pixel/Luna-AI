@@ -10,8 +10,11 @@ API_KEY = "AIzaSyCuBPFaFysKBqjPsnUHO3o2qY57voTtNaI"
 genai.configure(api_key=API_KEY)
 
 # Luna'nın Kişiliği ve Model Seçimi
-# Not: 'gemini-1.5-flash' en güncel ve hızlı modeldir.
-model = genai.GenerativeModel('gemini-1.5-flash')
+# En kararlı model ismi olan 'gemini-pro' kullanıldı
+try:
+    model = genai.GenerativeModel('gemini-pro')
+except:
+    model = genai.GenerativeModel('models/gemini-pro')
 
 # Sohbet Geçmişini Başlat
 if "messages" not in st.session_state:
@@ -32,9 +35,9 @@ if prompt := st.chat_input("Luna'ya bir şeyler sor..."):
     # Luna'nın cevabını oluştur
     with st.chat_message("assistant"):
         try:
-            # Sistem talimatı ile mesajı birleştiriyoruz
-            luna_instruction = "Senin adın Luna. Nazik ve neşeli bir asistansın. "
-            full_prompt = luna_instruction + prompt
+            # Sistem talimatı
+            luna_instruction = "Senin adın Luna. Nazik, neşeli ve yardımcı bir asistansın. "
+            full_prompt = f"{luna_instruction} \n\n Kullanıcı: {prompt}"
             
             response = model.generate_content(full_prompt)
             
@@ -45,5 +48,7 @@ if prompt := st.chat_input("Luna'ya bir şeyler sor..."):
                 st.write("Luna şu an sessiz kaldı, lütfen tekrar sormayı dene.")
                 
         except Exception as e:
+            st.error(f"Bir sorun oluştu: {e}")
+            st.info("İpucu: Eğer model hatası alıyorsan, API anahtarının Gemini Pro modeline erişimi olduğundan emin ol.")
             st.error(f"Bağlantı hatası: {e}")
             st.info("Lütfen API anahtarının aktif olduğunu ve internet bağlantını kontrol et.")
